@@ -1142,11 +1142,11 @@ async function generateQuiz() {
   appendMessage('user', `Buatkan saya latihan soal tentang ${currentTopic}`);
   showTyping(true);
   
-  const response = await fetch('http://127.0.0.1:8000/generate-quiz', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: '', topic: currentTopic })
-  });
+  const response = await fetch('https://pistan7-lms-fisika-backend.hf.space/ask', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ "question": text }) // Sesuaikan variabel ini dengan yang kamu buat sebelumnya
+});
   const data = await response.json();
   showTyping(false);
   appendMessage('ai', formatPhysicsResponse(data.quiz));
