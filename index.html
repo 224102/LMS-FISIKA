@@ -1161,9 +1161,11 @@ async function generateQuiz() {
     appendMessage('ai', formatPhysicsResponse(data.quiz));
   } catch (err) {
     showTyping(false);
-    appendMessage('ai', '⚠ Gagal membuat kuis. Terjadi kesalahan koneksi.');
-    console.error(err);
+    appendMessage('ai', '⚠ Gagal terhubung ke Otak Python. Pastikan link sudah benar!');
+    console.error(err); // Tambahkan ini agar error aslinya terlihat di Inspect Element
   }
+
+  isLoading = false; 
 }
 </script>
 </body>
