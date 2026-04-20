@@ -1136,6 +1136,7 @@ const response = await fetch('https://pistan7-lms-fisika-backend.hf.space/ask', 
     appendMessage('ai', '⚠ Gagal terhubung ke Otak Python. Pastikan link sudah benar!');
     console.error(err); // Tambahkan ini agar error aslinya terlihat di Inspect Element
   }
+  isLoading = false;
 }
 
 async function generateQuiz() {
@@ -1164,8 +1165,6 @@ async function generateQuiz() {
     appendMessage('ai', '⚠ Gagal terhubung ke Otak Python. Pastikan link sudah benar!');
     console.error(err); // Tambahkan ini agar error aslinya terlihat di Inspect Element
   }
-
-  isLoading = false; 
 }
 </script>
 </body>
