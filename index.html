@@ -1116,40 +1116,56 @@ async function sendMessage() {
   const currentTopic = document.getElementById('topic-title').textContent;
 
   try {
-    // MEMANGGIL PYTHON BACKEND ANDA
-    const response = await fetch('http://127.0.0.1:8000/ask', {
+    // URL SUDAH DIGANTI KE HUGGING FACE
+    const response = await fetch('https://pistan7-lms-fisika-backend.hf.space/ask', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: text,
-        topic: currentTopic
-      })
+      // PERHATIKAN: Pastikan ini sesuai dengan yang diminta di main.py kamu
+      // Jika di main.py kamu pakai class Item(BaseModel): question: str
+      // Maka gunakan "question": text
+      body: JSON.stringify({ "question": text }) 
     });
 
     const data = await response.json();
     showTyping(false);
+    
+    // Pastikan memanggil data.answer (sesuaikan dengan return di main.py)
     appendMessage('ai', formatPhysicsResponse(data.answer));
 
   } catch (err) {
     showTyping(false);
-    appendMessage('ai', '⚠ Gagal terhubung ke Otak Python. Pastikan main.py sudah dijalankan!');
+    appendMessage('ai', '⚠ Gagal terhubung ke Otak Python. Pastikan link sudah benar!');
+    console.error(err); // Tambahkan ini agar error aslinya terlihat di Inspect Element
   }
-
-  isLoading = false;
 }
+
 async function generateQuiz() {
   const currentTopic = document.getElementById('topic-title').textContent;
-  appendMessage('user', `Buatkan saya latihan soal tentang ${currentTopic}`);
+  
+  // 1. Definisikan teks pertanyaannya di sini
+  const textPertanyaan = `Buatkan saya latihan soal tentang ${currentTopic}`;
+  
+  appendMessage('user', textPertanyaan);
   showTyping(true);
   
-  const response = await fetch('https://pistan7-lms-fisika-backend.hf.space/ask', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ "question": text }) // Sesuaikan variabel ini dengan yang kamu buat sebelumnya
-});
-  const data = await response.json();
-  showTyping(false);
-  appendMessage('ai', formatPhysicsResponse(data.quiz));
+  try {
+    const response = await fetch('https://pistan7-lms-fisika-backend.hf.space/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      // 2. Masukkan teks yang sudah didefinisikan tadi
+      body: JSON.stringify({ "question": textPertanyaan })
+    });
+    
+    const data = await response.json();
+    showTyping(false);
+    
+    // 3. Pastikan memanggil data.answer, bukan data.quiz (kecuali main.py kamu memang me-return "quiz")
+    appendMessage('ai', formatPhysicsResponse(data.answer));
+  } catch (err) {
+    showTyping(false);
+    appendMessage('ai', '⚠ Gagal membuat kuis. Terjadi kesalahan koneksi.');
+    console.error(err);
+  }
 }
 </script>
 </body>
